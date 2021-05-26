@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -20,13 +21,37 @@ namespace PlaytimeOT
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+               .AddCookie(options => {
+                   options.LoginPath = "/login";
+                    options.Events = new CookieAuthenticationEvents()
+                   {
+                       OnSigningIn = async context =>
+                       {
+                           await Task.CompletedTask;
+                       },
+
+                       OnSignedIn = async context =>
+                       {
+                           await Task.CompletedTask;
+
+                       },
+
+                       OnValidatePrincipal = async context =>
+                       {
+                           await Task.CompletedTask;
+
+                       }
+                   };
+                   
+
+                });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+       
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -36,7 +61,6 @@ namespace PlaytimeOT
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
@@ -44,7 +68,9 @@ namespace PlaytimeOT
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+           
 
             app.UseEndpoints(endpoints =>
             {

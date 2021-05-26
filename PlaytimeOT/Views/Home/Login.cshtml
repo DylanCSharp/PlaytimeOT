@@ -1,0 +1,33 @@
+﻿@{
+    var returnUrl = ViewData["ReturnURL"] as string;
+    var error = TempData["Error"] as string;
+
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title> Login Page </title>
+    </head>
+    <center> <h1>Login Form</h1> </center>
+    if (!string.IsNullOrEmpty(error))
+    {
+        <h2 class="alert-danger" style="padding: 10px;">@error</h2>
+    }
+    <form action="/login?ReturnURL=@System.Net.WebUtility.UrlEncode(returnUrl)" method="post">
+        <div class="container">
+            <label>Email Address : </label>
+            <input type="email" placeholder="Enter Email Address" name="email" required>
+
+            <label>Password : </label>
+            <input type="password" placeholder="Enter Password" name="password" required>
+
+            <button type="submit">Login</button>
+
+            <input type="checkbox" checked="checked"> Remember me
+            <button type="button" class="cancelbtn"> Cancel</button>
+
+            Forgot <a href="#"> password? </a>
+        </div>
+    </form>
+
+
+
+}
