@@ -80,7 +80,7 @@ namespace PlaytimeOT.Controllers
             }
             else
             {
-                TempData["Error"] = "Error: Invalid Credentials";
+                TempData["Error"] = "Username or password is incorrect!";
                 return View("login");
             }
         }
@@ -91,12 +91,6 @@ namespace PlaytimeOT.Controllers
             await HttpContext.SignOutAsync();
 
             return Redirect("/"); 
-        }
-
-        [Authorize]
-        public IActionResult Secured()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
